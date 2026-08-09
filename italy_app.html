@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Italy Choice Lab</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-amber-50 to-orange-100 min-h-screen font-sans text-gray-800">
+
+<div class="max-w-4xl mx-auto px-4 py-8">
+
+  <div class="text-center mb-8">
+    <h1 class="text-4xl font-bold text-orange-800">🇮🇹 Italy Choice Lab</h1>
+    <p class="text-orange-600 mt-1">The Italy Eye Doctor — "Better one... or better two?"</p>
+  </div>
+
+  <!-- ===================== SCREEN 1: ONBOARDING ===================== -->
+  <div id="screen-onboarding" class="bg-white rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold mb-6 text-center">Quick Setup — 3 Questions</h2>
+
+    <div class="mb-8">
+      <p class="font-semibold mb-3">1. What's your budget style?</p>
+      <div class="grid grid-cols-2 gap-4">
+        <button onclick="selectAnswer('budget','backpacker',this)" class="answer-btn border-2 border-gray-200 rounded-xl p-4 hover:border-orange-500 transition text-left">
+          <span class="text-2xl">🎒</span><br><span class="font-semibold">Backpacker</span><br>
+          <span class="text-sm text-gray-500">Save money, stay flexible</span>
+        </button>
+        <button onclick="selectAnswer('budget','luxury',this)" class="answer-btn border-2 border-gray-200 rounded-xl p-4 hover:border-orange-500 transition text-left">
+          <span class="text-2xl">🥂</span><br><span class="font-semibold">Luxury</span><br>
+          <span class="text-sm text-gray-500">Comfort and quality first</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <p class="font-semibold mb-3">2. What's your travel pace?</p>
+      <div class="grid grid-cols-2 gap-4">
+        <button onclick="selectAnswer('pace','fast',this)" class="answer-btn border-2 border-gray-200 rounded-xl p-4 hover:border-orange-500 transition text-left">
+          <span class="text-2xl">🏃</span><br><span class="font-semibold">Fast Checklist</span><br>
+          <span class="text-sm text-gray-500">See as much as possible</span>
+        </button>
+        <button onclick="selectAnswer('pace','slow',this)" class="answer-btn border-2 border-gray-200 rounded-xl p-4 hover:border-orange-500 transition text-left">
+          <span class="text-2xl">🧘</span><br><span class="font-semibold">Slow Immersion</span><br>
+          <span class="text-sm text-gray-500">Fewer places, deeper time</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <p class="font-semibold mb-3">3. What draws you more?</p>
+      <div class="grid grid-cols-2 gap-4">
+        <button onclick="selectAnswer('focus','history',this)" class="answer-btn border-2 border-gray-200 rounded-xl p-4 hover:border-orange-500 transition text-left">
+          <span class="text-2xl">🏛️</span><br><span class="font-semibold">History & Art</span><br>
+          <span class="text-sm text-gray-500">Ruins, museums, cities</span>
+        </button>
+        <button onclick="selectAnswer('focus','coast',this)" class="answer-btn border-2 border-gray-200 rounded-xl p-4 hover:border-orange-500 transition text-left">
+          <span class="text-2xl">🏖️</span><br><span class="font-semibold">Coast & Beaches</span><br>
+          <span class="text-sm text-gray-500">Sea, sun, relaxation</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button id="start-btn" onclick="startComparisons()" disabled
+        class="bg-gray-300 text-white font-bold py-3 px-8 rounded-full cursor-not-allowed transition">
+        Answer all 3 to continue
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 2: PAIRWISE TEST ===================== -->
+  <div id="screen-pairwise" class="hidden">
+    <div class="mb-4">
+      <div class="flex justify-between text-sm text-orange-700 font-semibold mb-1">
+        <span id="progress-text">Comparison 1 of 15</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="w-full bg-orange-100 rounded-full h-3">
+        <div id="progress-bar" class="bg-orange-500 h-3 rounded-full transition-all duration-300" style="width:0%"></div>
+      </div>
+    </div>
+
+    <p class="text-center text-lg font-semibold text-gray-700 mb-6">Which sounds better to you?</p>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Card A -->
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+        <div id="card-a-image" class="h-44 flex items-center justify-center text-6xl bg-orange-200"></div>
+        <div class="p-5 flex flex-col flex-grow">
+          <h3 id="card-a-title" class="text-xl font-bold mb-2"></h3>
+          <p id="card-a-desc" class="text-gray-600 text-sm flex-grow"></p>
+          <button onclick="choose('a')" class="mt-4 bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 rounded-xl transition">
+            Select This
+          </button>
+        </div>
+      </div>
+
+      <!-- Card B -->
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+        <div id="card-b-image" class="h-44 flex items-center justify-center text-6xl bg-blue-200"></div>
+        <div class="p-5 flex flex-col flex-grow">
+          <h3 id="card-b-title" class="text-xl font-bold mb-2"></h3>
+          <p id="card-b-desc" class="text-gray-600 text-sm flex-grow"></p>
+          <button onclick="choose('b')" class="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-xl transition">
+            Select This
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-6">
+      <button onclick="choose('skip')" class="text-gray-500 underline text-sm hover:text-gray-700">
+        Hard pass on both — skip this pair
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================== SCREEN 3: RESULTS ===================== -->
+  <div id="screen-results" class="hidden">
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-6 text-center">
+      <h2 class="text-3xl font-bold text-orange-800 mb-2">Your Italy Profile</h2>
+      <p id="profile-summary" class="text-gray-600"></p>
+    </div>
+
+    <div class="bg-white rounded-2xl shadow-lg p-8">
+      <h3 class="text-2xl font-bold mb-6">Your Ranked Preferences</h3>
+      <div id="results-list" class="space-y-4"></div>
+    </div>
+
+    <div class="text-center mt-8">
+      <button onclick="restartApp()" class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-8 rounded-full transition">
+        Start Over
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============================================================
+   DATA: The 10 Italian Experiences
+   Each has: id, title, emoji (used as the image placeholder),
+   description, and tags (used only for the profile summary text)
+   ============================================================ */
+const experiences = [
+  { id: 1,  title: "Colosseum & Roman Forum (Rome)",         emoji: "🏛️", desc: "Walk through 2,000 years of history in the heart of ancient Rome. Iconic, crowded, unforgettable." },
+  { id: 2,  title: "Amalfi Coast Drive & Beach Towns",       emoji: "🏖️", desc: "Cliffside villages, turquoise water, and winding coastal roads between Positano and Ravello." },
+  { id: 3,  title: "Florence Renaissance Art Walk",          emoji: "🎨", desc: "Uffizi Gallery, Michelangelo's David, and the Duomo — a deep dive into Renaissance masterpieces." },
+  { id: 4,  title: "Cinque Terre Village Hopping",           emoji: "🌊", desc: "Five colorful cliffside fishing villages connected by scenic hiking trails along the Ligurian coast." },
+  { id: 5,  title: "Venice Canals & Gondola Ride",           emoji: "🚤", desc: "Get lost in quiet alleyways, cross tiny bridges, and glide through canals at sunset." },
+  { id: 6,  title: "Tuscan Countryside & Wine Tasting",       emoji: "🍷", desc: "Rolling vineyards, hilltop towns like Siena, and slow afternoons at family-run wineries." },
+  { id: 7,  title: "Sicily's Ancient Ruins & Street Food",   emoji: "🍋", desc: "Greek temples in Agrigento, bustling Palermo markets, and bold Sicilian flavors." },
+  { id: 8,  title: "Lake Como Relaxation",                    emoji: "🛶", desc: "Alpine backdrops, quiet lakeside towns, and slow mornings on the water." },
+  { id: 9,  title: "Naples & Pompeii Day Trip",               emoji: "🌋", desc: "Gritty, authentic Naples pizza culture followed by the frozen-in-time ruins of Pompeii." },
+  { id: 10, title: "Sardinia's Hidden Beaches",               emoji: "🏝️", desc: "Remote white-sand coves and clear water, far from the typical tourist trail." }
+];
+
+/* ============================================================
+   STATE
+   ============================================================ */
+let answers = { budget: null, pace: null, focus: null };
+let scores = {};          // score per experience id
+let pairsQueue = [];      // array of [indexA, indexB]
+let currentPairIndex = 0;
+let currentPair = null;
+const TOTAL_PAIRS = 15;   // how many comparisons the user will see
+
+/* ============================================================
+   ONBOARDING LOGIC
+   ============================================================ */
+function selectAnswer(question, value, btnEl) {
+  answers[question] = value;
+
+  // highlight only the clicked button within its question group
+  const group = btnEl.parentElement;
+  Array.from(group.children).forEach(btn => {
+    btn.classList.remove('border-orange-500', 'bg-orange-50');
+    btn.classList.add('border-gray-200');
+  });
+  btnEl.classList.remove('border-gray-200');
+  btnEl.classList.add('border-orange-500', 'bg-orange-50');
+
+  checkOnboardingComplete();
+}
+
+function checkOnboardingComplete() {
+  const startBtn = document.getElementById('start-btn');
+  if (answers.budget && answers.pace && answers.focus) {
+    startBtn.disabled = false;
+    startBtn.textContent = "Start Comparing →";
+    startBtn.classList.remove('bg-gray-300', 'cursor-not-allowed');
+    startBtn.classList.add('bg-orange-600', 'hover:bg-orange-700', 'cursor-pointer');
+  }
+}
+
+/* ============================================================
+   PAIRWISE ENGINE
+   ============================================================ */
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function generatePairs() {
+  const allPairs = [];
+  for (let i = 0; i < experiences.length; i++) {
+    for (let j = i + 1; j < experiences.length; j++) {
+      allPairs.push([i, j]);
+    }
+  }
+  shuffle(allPairs);
+  return allPairs.slice(0, TOTAL_PAIRS);
+}
+
+function startComparisons() {
+  experiences.forEach(exp => scores[exp.id] = 0);
+  pairsQueue = generatePairs();
+  currentPairIndex = 0;
+
+  document.getElementById('screen-onboarding').classList.add('hidden');
+  document.getElementById('screen-pairwise').classList.remove('hidden');
+
+  renderPair();
+}
+
+function renderPair() {
+  if (currentPairIndex >= pairsQueue.length) {
+    showResults();
+    return;
+  }
+
+  const [i, j] = pairsQueue[currentPairIndex];
+  currentPair = { a: experiences[i], b: experiences[j] };
+
+  document.getElementById('card-a-image').textContent = currentPair.a.emoji;
+  document.getElementById('card-a-title').textContent = currentPair.a.title;
+  document.getElementById('card-a-desc').textContent = currentPair.a.desc;
+
+  document.getElementById('card-b-image').textContent = currentPair.b.emoji;
+  document.getElementById('card-b-title').textContent = currentPair.b.title;
+  document.getElementById('card-b-desc').textContent = currentPair.b.desc;
+
+  const num = currentPairIndex + 1;
+  document.getElementById('progress-text').textContent = `Comparison ${num} of ${pairsQueue.length}`;
+  const pct = Math.round((currentPairIndex / pairsQueue.length) * 100);
+  document.getElementById('progress-pct').textContent = pct + '%';
+  document.getElementById('progress-bar').style.width = pct + '%';
+}
+
+function choose(side) {
+  if (side === 'a') {
+    scores[currentPair.a.id]++;
+  } else if (side === 'b') {
+    scores[currentPair.b.id]++;
+  }
+  // 'skip' gives no points to either — simply moves on
+
+  currentPairIndex++;
+  renderPair();
+}
+
+/* ============================================================
+   RESULTS SCREEN
+   ============================================================ */
+function showResults() {
+  document.getElementById('screen-pairwise').classList.add('hidden');
+  document.getElementById('screen-results').classList.remove('hidden');
+
+  // Build the profile summary sentence from onboarding answers
+  const budgetText = answers.budget === 'backpacker' ? 'a Backpacker budget' : 'a Luxury budget';
+  const paceText = answers.pace === 'fast' ? 'a Fast Checklist pace' : 'Slow Immersion travel';
+  const focusText = answers.focus === 'history' ? 'History & Art' : 'Coast & Beaches';
+  document.getElementById('profile-summary').textContent =
+    `You're planning around ${budgetText}, ${paceText}, with a pull toward ${focusText}.`;
+
+  // Rank experiences by score, highest first
+  const ranked = [...experiences].sort((a, b) => scores[b.id] - scores[a.id]);
+
+  const listEl = document.getElementById('results-list');
+  listEl.innerHTML = '';
+
+  ranked.forEach((exp, index) => {
+    const rankColors = ['bg-yellow-400', 'bg-gray-300', 'bg-orange-300'];
+    const rankColor = rankColors[index] || 'bg-orange-100';
+
+    const row = document.createElement('div');
+    row.className = 'flex items-center gap-4 border-b border-gray-100 pb-4';
+    row.innerHTML = `
+      <div class="${rankColor} w-10 h-10 rounded-full flex items-center justify-center font-bold text-gray-800 flex-shrink-0">
+        ${index + 1}
+      </div>
+      <div class="text-3xl">${exp.emoji}</div>
+      <div class="flex-grow">
+        <p class="font-bold">${exp.title}</p>
+        <p class="text-sm text-gray-500">${exp.desc}</p>
+      </div>
+      <div class="text-orange-700 font-bold text-sm flex-shrink-0">
+        ${scores[exp.id]} wins
+      </div>
+    `;
+    listEl.appendChild(row);
+  });
+}
+
+/* ============================================================
+   RESTART
+   ============================================================ */
+function restartApp() {
+  answers = { budget: null, pace: null, focus: null };
+  scores = {};
+  pairsQueue = [];
+  currentPairIndex = 0;
+
+  document.querySelectorAll('.answer-btn').forEach(btn => {
+    btn.classList.remove('border-orange-500', 'bg-orange-50');
+    btn.classList.add('border-gray-200');
+  });
+
+  const startBtn = document.getElementById('start-btn');
+  startBtn.disabled = true;
+  startBtn.textContent = "Answer all 3 to continue";
+  startBtn.classList.add('bg-gray-300', 'cursor-not-allowed');
+  startBtn.classList.remove('bg-orange-600', 'hover:bg-orange-700', 'cursor-pointer');
+
+  document.getElementById('screen-results').classList.add('hidden');
+  document.getElementById('screen-onboarding').classList.remove('hidden');
+}
+</script>
+
+</body>
+</html>
+```
+
